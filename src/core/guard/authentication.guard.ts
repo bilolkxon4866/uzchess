@@ -13,10 +13,10 @@ class AuthenticationGuard implements CanActivate{
   ) {}
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    // let roles = this.reflector.getAllAndOverride(RolesKey, [context.getHandler(), context.getClass()])
-    // if (!roles) {
-    //   return true
-    // }
+    let roles = this.reflector.getAllAndOverride(RolesKey, [context.getHandler(), context.getClass()])
+    if (!roles) {
+      return true
+    }
 
     let request: Request = context.switchToHttp().getRequest()
     if (!request.headers.authorization) {

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { NewsAdminService } from './services/news/news.admin.service';
+import { NewsAdminRepository, NewsAdminService } from './services/news/news.admin.service';
 import { NewsPublicService } from './services/news/news.public.service';
 import { NewsAdminController } from './controllers/news/news.admin.controller';
 import { NewsPublicController } from './controllers/news/news.public.controller';
@@ -12,6 +12,7 @@ import { NewsViewsPublicController } from './controllers/newsViews/newsViews.pub
   providers : [
     NewsAdminService,
     NewsPublicService,
+    NewsAdminRepository,
     NewsViewsAdminService,
     NewsViewsPublicService
   ],

@@ -4,22 +4,26 @@ import { NewsView } from '../../entities/newsViews.entity';
 import { plainToInstance } from 'class-transformer';
 import { NewsViewsUpdateAdminDto } from '../../dtos/newsViews/admin/newsViews.update.admin.dto';
 import { NewsViewsListAdminDto } from '../../dtos/newsViews/admin/newsViews.list.admin.dto';
+import { NewsViewsAdminRepository } from '../../repositories/newsViews/newsViews.admin.repository';
+import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
 @Injectable()
 export class NewsViewsAdminService{
+  constructor(private readonly repo: NewsViewsAdminRepository) {
+  }
   async create(payload : NewsViewsCreateAdminDto){
     const newsViews = NewsView.create(payload)
-    await NewsView.save(newsViews)
-    return newsViews
+    return await this.repo.save(newsViews)
+
   }
   
-  async getAll(){
-    const newsViews = await NewsView.find()
+  async getAll(filters: PaginationFilters){
+    const newsViews = await this.repo.getAll(filters)
     return plainToInstance(NewsViewsListAdminDto,newsViews,{excludeExtraneousValues : true})
   }
   
   async getOne(id : number){
-    const newsViews = await NewsView.findOneBy({ id });
+    const newsViews = await this.repo.getOneById(id);
     if(!newsViews){
       throw new NotFoundException('newsViews with given id not found')
     }
@@ -27,7 +31,7 @@ export class NewsViewsAdminService{
   }
 
   async update(id : number,payload : NewsViewsUpdateAdminDto){
-    const newsViews = await NewsView.findOneBy({ id });
+    const newsViews = await this.repo.getOneById(id);
     if(!newsViews){
       throw new NotFoundException('newsViews with given id not found')
     }
@@ -39,8 +43,8 @@ export class NewsViewsAdminService{
       )
     )
 
-    await NewsView.save(newsViews)
-    return newsViews
+    return await this.repo.save(newsViews)
+
   }
 
   async delete(id : number){
@@ -49,6 +53,6 @@ export class NewsViewsAdminService{
       throw new NotFoundException('newsViews with given id not found')
     }
 
-    await NewsView.remove(newsViews)
+    await this.repo.delete(newsViews)
   }
 }

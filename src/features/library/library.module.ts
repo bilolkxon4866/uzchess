@@ -15,8 +15,21 @@ import { BookReviewsAdminService } from './services/bookReviews/bookReviews.admi
 import { BookReviewsPublicService } from './services/bookReviews/bookReviews.public.service';
 import { BookReviewsAdminController } from './controllers/bookReviews/bookReviews.admin.controller';
 import { BookReviewsPublicController } from './controllers/bookReviews/bookReviews.public.controller';
+import { Type } from 'class-transformer';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Book } from './entities/book.entity';
+import { BookReview } from './entities/bookReviews.entity';
+import { BookLike } from './entities/bookLikes.entity';
+import { BookCategory } from './entities/bookCategory.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([
+    Book,
+    BookLike,
+    BookReview,
+    BookCategory,
+  ])
+  ],
   providers : [
     BookCategoryAdminService,
     BookCategoryPublicService,

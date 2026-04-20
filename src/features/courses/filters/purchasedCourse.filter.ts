@@ -1,0 +1,15 @@
+import { PaginationFilters } from '../../common/filters/paginationfilter';
+import { IsInt, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+
+export class PurchasedCourseFilter extends PaginationFilters{
+  @IsInt()
+  @IsOptional()
+  @ApiProperty({required: false})
+  userId?: number
+
+  @IsInt()
+  @IsOptional()
+  @ApiProperty({required: false})
+  courseId?: number
+}

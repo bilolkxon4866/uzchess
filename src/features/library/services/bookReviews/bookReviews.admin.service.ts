@@ -4,22 +4,26 @@ import { BookReview } from '../../entities/bookReviews.entity';
 import { plainToInstance } from 'class-transformer';
 import { BookReviewsListAdminDto } from '../../dtos/bookReviews/admin/bookReviews.list.admin.dto';
 import { BookReviewsUpdateAdminDto } from '../../dtos/bookReviews/admin/bookReviews.update.admin.dto';
+import { BookReviewsAdminRepository } from '../../repositories/admin/bookReviews.admin.repository';
+import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
 @Injectable()
 export class BookReviewsAdminService {
+  constructor(private readonly repo: BookReviewsAdminRepository) {
+  }
   async create(payload : BookReviewsCreateAdminDto){
     const bookReviews = BookReview.create(payload)
-    await BookReview.save(bookReviews)
-    return bookReviews
+    return await this.repo.save(bookReviews)
+
   }
   
-  async getAll(){
-    const bookReviews = await BookReview.find()
+  async getAll(filters: PaginationFilters){
+    const bookReviews = await this.repo.getAll(filters)
     return plainToInstance(BookReviewsListAdminDto,bookReviews,{excludeExtraneousValues : true})
   }
   
   async getOne(id : number){
-    const bookReviews = await BookReview.findOneBy({ id });
+    const bookReviews = await this.repo.getOneById(id);
     if(!bookReviews){
       throw new NotFoundException('bookReviews with given id not found')
     }
@@ -28,7 +32,7 @@ export class BookReviewsAdminService {
   }
 
   async update(id :number,payload : BookReviewsUpdateAdminDto){
-    const bookReviews = await BookReview.findOneBy({ id });
+    const bookReviews = await this.repo.getOneById(id);
     if(!bookReviews){
       throw new NotFoundException('bookReviews with given id not found')
     }
@@ -40,8 +44,8 @@ export class BookReviewsAdminService {
       )
     )
 
-    await BookReview.save(bookReviews)
-    return bookReviews
+    return await this.repo.save(bookReviews)
+
   }
 
   async delete(id : number){
@@ -50,6 +54,6 @@ export class BookReviewsAdminService {
       throw new NotFoundException('bookReviews with given id not found')
     }
 
-    await BookReview.remove(bookReviews)
+    await this.repo.delete(bookReviews)
   }
 }

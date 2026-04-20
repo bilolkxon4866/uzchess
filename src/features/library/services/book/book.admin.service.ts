@@ -4,32 +4,29 @@ import { Book } from '../../entities/book.entity';
 import { plainToInstance } from 'class-transformer';
 import { BookListAdminDto } from '../../dtos/book/admin/book.list.admin.dto';
 import { BookUpdateAdminDto } from '../../dtos/book/admin/book.update.admin.dto';
+import { BookAdminRepository } from '../../repositories/admin/book.admin.repository';
+import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
 @Injectable()
 export class BookAdminService{
+  constructor(private readonly repo: BookAdminRepository) {}
+
   async create(payload : BookCreateAdminDto,image : Express.Multer.File){
-    const book = Book.create(payload)
+    let book = Book.create(payload)
     if(image){
       book.image = image.path
     }
-    await Book.save(book)
-    return book
+    return await Book.save(book)
+
   }
 
-  async getAll(){
-    const book = await Book.find({
-      relations: {
-        author: true,
-        category: true,
-        language: true,
-        difficulty: true,
-      },
-    })
+  async getAll(filters: PaginationFilters){
+    const book = await this.repo.getAll(filters)
     return plainToInstance(BookListAdminDto,book,{excludeExtraneousValues : true})
   }
   
   async getOne(id : number){
-    const book = await Book.findOneBy({ id });
+    const book = await this.repo.getOneById(id);
     if(!book){
       throw new NotFoundException('book with given id not found')
     }
@@ -38,7 +35,7 @@ export class BookAdminService{
   }
 
   async update(id : number,payload : BookUpdateAdminDto,image : Express.Multer.File){
-    const book = await Book.findOneBy({ id });
+    const book = await this.repo.getOneById(id);
     if(!book){
       throw new NotFoundException('book with given id not found')
     }
@@ -54,7 +51,7 @@ export class BookAdminService{
       book.image = image.path
     }
 
-    await Book.save(book)
+    await this.repo.save(book)
     return book
   }
 
@@ -64,6 +61,6 @@ export class BookAdminService{
       throw new NotFoundException('book with given id not found')
     }
 
-    await Book.remove(book)
+    await this.repo.delete(book)
   }
 }
