@@ -7,7 +7,7 @@ import { BookDetailPublicDto } from '../../dtos/book/public/book.detail.public.d
 @Controller('public/book')
 export class BookPublicController{
 
-  constructor(private service : BookPublicService) {
+  constructor(private readonly service : BookPublicService) {
   }
   @Get()
   @ApiOkResponse({type : () => BookListPublicDto,isArray:true})

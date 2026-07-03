@@ -7,6 +7,7 @@ import { BookUpdateAdminDto } from '../../dtos/book/admin/book.update.admin.dto'
 import { BookDetailAdminDto } from '../../dtos/book/admin/book.detail.admin.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storageOptions } from '../../../../config/multer.config';
+import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
 @Controller('admin/book')
 export class BookAdminController{
@@ -27,8 +28,8 @@ export class BookAdminController{
 
   @Get()
   @ApiOkResponse({type : () => BookListAdminDto,isArray:true})
-  async getAll(){
-    return await this.service.getAll()
+  async getAll(filters: PaginationFilters){
+    return await this.service.getAll(filters)
   }
 
   @Get(':id')

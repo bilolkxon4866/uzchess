@@ -9,31 +9,12 @@ import { CoursesModule } from './features/courses/courses.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtModuleConfig } from './config/jwt-module.config';
 import { ConfigModule } from '@nestjs/config';
-import Joi from 'joi';
-
+import { configModuleOptions } from './config/env.config';
 @Module({
   imports: [
     JwtModule.register(jwtModuleConfig),
+    ConfigModule.forRoot(configModuleOptions),
     TypeOrmModule.forRoot(typeOrmConfig),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validationSchema: Joi.object({
-        SECRET_KEY: Joi.string().required(),
-        PORT: Joi.number().required(),
-        DB_URL: Joi.string().required(),
-        DEFAULT_DB_URL: Joi.string().required(),
-        TEST_DB_URL: Joi.string().required(),
-        JWT_EXPIRE: Joi.string().required(),
-        OTP_EXPIRE: Joi.number().required(),
-        OTP_RESEND: Joi.number().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DB: Joi.string().required(),
-        DEFAULT_SIZE: Joi.number().required(),
-        DEFAULT_PAGE: Joi.number().required(),
-        BASE_URL: Joi.string().required(),
-      }),
-    }),
 
     NewsModule,
     LibraryModule,

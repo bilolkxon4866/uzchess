@@ -21,16 +21,18 @@ import { Book } from './entities/book.entity';
 import { BookReview } from './entities/bookReviews.entity';
 import { BookLike } from './entities/bookLikes.entity';
 import { BookCategory } from './entities/bookCategory.entity';
+import { BookAdminRepository } from './repositories/admin/book.admin.repository';
+import { BookLikesAdminRepository } from './repositories/admin/bookLikes.admin.repository';
+import { BookReviewsAdminRepository } from './repositories/admin/bookReviews.admin.repository';
+import { BookCategoryAdminRepository } from './repositories/admin/bookCategory.admin.repository';
+import { BookPublicRepository } from './repositories/public/book.public.repository';
+import { BookLikesPublicRepository } from './repositories/public/bookLikes.public.repository';
+import { BookReviewsPublicRepository } from './repositories/public/bookReviews.public.repository';
+import { BookCategoryPublicRepository } from './repositories/public/bookCategory.public.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([
-    Book,
-    BookLike,
-    BookReview,
-    BookCategory,
-  ])
-  ],
-  providers : [
+  imports: [TypeOrmModule.forFeature([Book, BookLike, BookReview, BookCategory])],
+  providers: [
     BookCategoryAdminService,
     BookCategoryPublicService,
     BookAdminService,
@@ -38,9 +40,17 @@ import { BookCategory } from './entities/bookCategory.entity';
     BookLikesAdminService,
     BookLikesPublicService,
     BookReviewsAdminService,
-    BookReviewsPublicService
+    BookAdminRepository,
+    BookLikesAdminRepository,
+    BookReviewsAdminRepository,
+    BookCategoryAdminRepository,
+    BookReviewsPublicService,
+    BookPublicRepository,
+    BookLikesPublicRepository,
+    BookReviewsPublicRepository,
+    BookCategoryPublicRepository,
   ],
-  controllers : [
+  controllers: [
     bookCategoryAdminController,
     bookCategoryPublicController,
     BookAdminController,
@@ -48,8 +58,7 @@ import { BookCategory } from './entities/bookCategory.entity';
     BookLikesAdminController,
     BookLikesPublicController,
     BookReviewsAdminController,
-    BookReviewsPublicController
-  ]
+    BookReviewsPublicController,
+  ],
 })
-
 export class LibraryModule {}

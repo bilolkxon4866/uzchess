@@ -4,6 +4,7 @@
   import { BookCategoryCreateAdminDto } from '../../dtos/bookCategories/admin/bookCategory.create.admin.dto';
   import { BookCategoryUpdateAdminDto } from '../../dtos/bookCategories/admin/bookCategory.update.admin.dto';
   import { BookCategoryAdminService } from '../../services/bookCategory/bookCategory.admin.service';
+  import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
   @Controller('admin/bookCategory')
   export class bookCategoryAdminController {
@@ -13,8 +14,8 @@
 
     @Get()
     @ApiOkResponse({type : () => BookCategoryListAdminDto})
-    async getAll(){
-      return await this.service.getAll()
+    async getAll(filters: PaginationFilters){
+      return await this.service.getAll(filters)
     }
 
     @Get(':id')

@@ -5,6 +5,7 @@ import { ApiOkResponse } from '@nestjs/swagger';
 import { BookReviewsListAdminDto } from '../../dtos/bookReviews/admin/bookReviews.list.admin.dto';
 import { BookReviewsDetailAdminDto } from '../../dtos/bookReviews/admin/bookReviews.detail.admin.dto';
 import { BookReviewsUpdateAdminDto } from '../../dtos/bookReviews/admin/bookReviews.update.admin.dto';
+import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
 @Controller('admin/bookReviews')
 export class BookReviewsAdminController{
@@ -19,8 +20,8 @@ export class BookReviewsAdminController{
 
   @Get()
   @ApiOkResponse({type : () => BookReviewsListAdminDto,isArray : true})
-  async getAll(){
-    return await this.service.getAll()
+  async getAll(filters: PaginationFilters){
+    return await this.service.getAll(filters)
   }
 
   @Get(':id')

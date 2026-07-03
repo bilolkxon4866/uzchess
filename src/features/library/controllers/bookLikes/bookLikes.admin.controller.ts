@@ -6,6 +6,7 @@ import { BookLikesListAdminDto } from '../../dtos/bookLikes/admin/bookLikes.list
 import { BookLikesDetailAdminDto } from '../../dtos/bookLikes/admin/bookLikes.detail.admin.dto';
 import { BookLikesUpdateAdminDto } from '../../dtos/bookLikes/admin/bookLikes.update.admin.dto';
 import { elementAt } from 'rxjs';
+import { PaginationFilters } from '../../../common/filters/paginationfilter';
 
 @Controller('admin/bookLikes')
 export class BookLikesAdminController{
@@ -19,8 +20,8 @@ export class BookLikesAdminController{
 
   @Get()
   @ApiOkResponse({type : () => BookLikesListAdminDto,isArray : true})
-  async getAll(){
-    return await this.service.getAll()
+  async getAll(filters: PaginationFilters){
+    return await this.service.getAll(filters)
   }
 
   @Get(':id')

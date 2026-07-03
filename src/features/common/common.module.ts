@@ -23,8 +23,11 @@ import { PlayersAdminService } from './services/players/players.admin.service';
 import { PlayersPublicService } from './services/players/players.public.service';
 import { PlayersAdminController } from './controllers/players/players.admin.controller';
 import { PlayersPublicController } from './controllers/players/players.public.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
+  imports: [ConfigModule],
   providers : [
     CountryAdminService,
     CountryPublicService,
